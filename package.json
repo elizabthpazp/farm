@@ -1,0 +1,55 @@
+{
+  "name": "finca",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vue/cli-plugin-pwa": "^5.0.8",
+    "bootstrap": "^5.2.2",
+    "bootstrap-vue": "^2.23.1",
+    "chart.js": "^3.9.1",
+    "core-js": "^3.8.3",
+    "node-sass": "^7.0.3",
+    "register-service-worker": "^1.7.2",
+    "sass-loader": "^13.1.0",
+    "vue": "^3.2.41",
+    "vue-chartjs": "^4.1.2",
+    "vue-i18n": "^8.27.2",
+    "vue-router": "^4.1.6",
+    "vue-router-prefetch": "^1.6.3",
+    "vue-sidebar-menu-akahon": "^0.1.4",
+    "vue-template-compiler": "^2.7.13",
+    "vue2-transitions": "^0.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {},
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
