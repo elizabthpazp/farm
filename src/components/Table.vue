@@ -4,13 +4,14 @@
     style="margin-right: 5%; margin-left: 5%"
   > 
     <div style="display:flex;margin:0 auto">
-    <div style="text-align:start;justify-content:start;padding-top:-1%;">
-      <h3 style="padding-bottom:10px">Categoría:</h3> 
-      <input type="text" @change="filterTodo(activeFilter)" v-model="activeFilter" style="border-radius:10px;height:50%;">
-    </div>
+    <div style="text-align:start;justify-content:start;padding-top:-1%;color:#42b983">
+      <h3>Finca Actual: {{fincaActual.finca}}</h3>
+      <!-- <h3 style="padding-bottom:10px">Categoría:</h3> 
+      <input type="text" @change="filterTodo(activeFilter)" v-model="activeFilter" style="border-radius:10px;height:50%;"> -->
+    </div>  
 
-    <div style="text-align:end;justify-content:end;margin:0 auto;padding-left:68%;margin-top:2%;">
-      <ModalAdd :title="'Agregar nuevo '+shortName" :table="name" :list="listModal" v-on:update="fetchData()" :selectt="selectt"/>
+    <div style="text-align:end;justify-content:end;margin:0 auto;margin-right:-10px">
+      <ModalAdd :title="'Agregar nuevo '+shortName" :table="name" :tableShort="shortName" :list="listModal" v-on:update="fetchData()" :selectt="selectt"/>
     </div> 
     </div>
     
@@ -23,13 +24,12 @@
             <!-- loop through each value of the fields to get the table header -->
             <th
               v-for="field in testFieldsR"
-              :key="field"
-              @click="sortTable(field)"
+              :key="field" 
             >
               {{ field }}
             </th>
 
-            <th colspan="2">Actions</th>
+            <th colspan="2">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -82,8 +82,9 @@
 import  ModalAdd from "@/components/ModalAdd.vue";
 import  ModalUpdate from "@/components/ModalUpdate.vue";
 import  ModalDelete from "@/components/ModalDelete.vue";
+import { useFincaStore } from '@/stores/finca'
 
-import { ref, onMounted, getCurrentInstance  } from "vue";
+import { ref, onMounted, getCurrentInstance, reactive, inject  } from "vue";
 
 export default {
   name: "TableComponent",
@@ -122,15 +123,19 @@ export default {
     let deleteD = ref(false);
     let updateD = ref(false);
     let idTemp = ref(""); 
-  
+   
     const app = getCurrentInstance()
+   // let fincaActual = reactive(app.appContext.config.globalProperties.$myGlobalVariable)
+  
+    const fincaFF = inject('myGlobalVariable')  
+
+    const fincaActual = useFincaStore()
 
     const fetchData = async () => {
-      loading.value = true;
-      const finca = app.appContext.config.globalProperties.$myGlobalVariable
-  
-      const url = props.name == 'animals' ? `http://localhost:9707/apis/${props.name}?idFincaId=${finca}`
-      : `http://localhost:9707/apis/${props.name}?idFinca=${finca}`;
+      loading.value = true; 
+
+      const url = props.name == 'animals' ? `http://localhost:9707/apis/${props.name}?idFincaId=${fincaActual.finca}`
+      : `http://localhost:9707/apis/${props.name}?idFinca=${fincaActual.finca}`;
 
       const r = await fetch(url, { 
        headers: {"Content-type": "application/json;charset=UTF-8"}, 
@@ -177,12 +182,13 @@ export default {
       else
       return true;
     }
-
+  
     onMounted(() => {  
       fetchData(); 
     });
 
     return { 
+      fincaActual, 
       dataTest,
       loading,
       error, 
@@ -194,10 +200,11 @@ export default {
       filters,
       filterTodo,
       getTodos,
-      getCategory,
+      getCategory, 
       actual, 
       idTemp,
-      updateD
+      updateD,
+      fincaFF
     };
   },
 };

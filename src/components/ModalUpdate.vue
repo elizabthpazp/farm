@@ -6,23 +6,18 @@
      <transition name="pop" appear>
        <div class="modal" role="dialog" v-if="showModal">
          <a @click="cleanForm()" class="modal-exit">x</a>
-         <h2>{{title}}</h2>
-         <br/>  
-         <hr/>
-         <br/><br/> 
-     <div class="content-modal scrollbar" id="style-1" style="justify-content:center;text-align:center;">
+         <h2 style="margin-bottom:10px;margin-top:-15px">{{title}}</h2>
+       
+         <hr style="margin-bottom:10px"/>
+         
+     <div class="content-modal scrollbar" id="style-1">
        <form method="POST" name="sentMessage" id="contactForm" @submit="sendForm()" action="https://vuejs.org/" validate="novalidate"> 
-         <div v-for="item in list" :key="item" class="row" style="zoom: 90%;">
-           <div class="col">{{item.name}}: </div>
-           <div v-if="item.type == 'selector'" class="col-md-8 selectContent" style="padding-left: 0px;margin-left: 0px; width:350px;">
-          <select name="select" ref="option" style="margin-left:5%" :placeholder="item.name" @mousemove="clichSelect()"  @change="onChange($event)">
+        <div v-for="item in list" :key="item" class="row" style="zoom: 90%; padding-bottom:3%;padding-top:-50px">  
+        <label for="name" style="width:200px;text-align:right;padding-right:20px;padding-top:5px">{{item.name}}:</label>
+        <select v-if="item.type == 'selector'" name="select" ref="option" style="width:200px" :placeholder="item.name" @mousemove="clichSelect()"  @change="onChange($event)">
             <option v-for="s in selectt" :key="s" :value="s.name">{{ s.name }}</option> 
-          </select> 
-         </div>
-           <div v-else class="col-md-8" style="padding-left: 0px;margin-left: 0px; width:350px;">
-            <input  @click="clearError()" class="input-modal" :ref="item.name" style="margin-left:5%" :type="item.type" :placeholder="item.name" required="required" :data-validation-required-message="'Please enter'+item.name"/> 
-          </div>
-          <br/><br/>
+          </select>  
+        <input v-else @click="clearError()" style="width:200px" class="input-modal" :ref="item.name" :type="item.type" :placeholder="item.name" required="required" :data-validation-required-message="'Please enter'+item.name"/> 
          </div>  
        </form>
      </div>
@@ -33,8 +28,8 @@
       <!-- <li v-for="error in errors">{{ error }}</li> -->
     </ul>
   </p>
-     <br/><br/> 
-         <div style="display:flex; justify-content:center;text-align:center;">
+     
+         <div style="display:flex; justify-content:center;text-align:center;margin-top:10px">
          <button type="button" class="button button--accept" @click="sendForm()">Aceptar</button>
          <button type="button" class="button button--cancel" @click="cleanForm()">Cancelar</button>
        </div>
@@ -197,6 +192,7 @@ select.addEventListener('mouseout', () => {
    
    
    <style lang="scss">
+  
    .button {
      margin: 0 15px;
      padding: 15px 0;
@@ -249,9 +245,9 @@ select.addEventListener('mouseout', () => {
      left: 0;
      margin: auto;
      text-align: center;
-     width: 40%;
+     width: auto;
      height: fit-content;
-     max-width: 100%;
+     max-width: 500px;
      padding: 2rem;
      border-radius: 1rem;
      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
@@ -291,8 +287,7 @@ select.addEventListener('mouseout', () => {
      text-align: center;
      justify-content: center;
      background-color: rgb(243, 242, 242);
-     padding-top: 8%;
-     padding-bottom: 6%;
+     
      border-radius: 1rem;
      margin-left: 5%;
      margin-right: 5%;
@@ -321,8 +316,7 @@ select.addEventListener('mouseout', () => {
      transform: scale(0.3) translateY(-50%);
    }
    
-   .input-modal {
-     width: 50%;
+   .input-modal { 
      padding: 1.5%;
      border: 1px solid rgb(225, 225, 225);
      border-radius: 10px;

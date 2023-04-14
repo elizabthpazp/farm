@@ -1,5 +1,5 @@
 <template>
-  <Table name="animals" shortName="animal" :testFields="testFields" :testFieldsR="testFieldsR" :listModal="listModal" :selectt="selectorEspecie"></Table>
+  <Table name="animals" shortName="alimento" :testFields="testFields" :testFieldsR="testFieldsR" :listModal="listModal" :selectt="selectorEspecie"></Table>
 </template>
   
   <script>

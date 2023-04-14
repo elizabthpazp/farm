@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
 <template>  
- <button type="button" class="button button--accept" @click="showModal = true">
-  <p>Nuevo</p>&nbsp;&nbsp;
+ <button type="button" class="button button--accept" @click="showModal = true" style="width:220px">
+  <p>Nuevo {{tableShort}}</p>&nbsp;&nbsp;&nbsp;
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-plus-circle"  viewBox="0 0 16 16">
    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -14,35 +14,26 @@
   <transition name="pop" appear>
     <div class="modal" role="dialog" v-if="showModal">
       <a @click="cleanForm()" class="modal-exit">x</a>
-      <h2>{{title}}</h2>
-      <br/>  
-      <hr/>
-      <br/><br/> 
+     <h2 style="margin-bottom:10px;margin-top:-15px">{{title}}</h2>
+       
+         <hr style="margin-bottom:10px"/>
+         
       <div class="content-modal scrollbar" id="style-1" style="justify-content:center;text-align:center;" >
     <form method="POST" name="sentMessage" id="contactForm" @submit="sendForm()" action="https://vuejs.org/" validate="novalidate"> 
-      <div v-for="item in list" :key="item" class="row" style="zoom: 90%;">
-        <div class="col-md-4" style="padding-left: 50px;margin-left: 50px; width:70px;">{{item.name}}: </div>
-        <div v-if="item.type == 'selector'" class="col-md-8 selectContent" style="padding-left: 0px;margin-left: 0px; width:350px;">
-          <select name="select" style="margin-left:5%" :placeholder="item.name" @mousemove="clichSelect()"  @change="onChange($event)">
+       <div v-for="item in list" :key="item" class="row" style="zoom: 90%; padding-bottom:3%;padding-top:-50px">  
+        <label for="name" style="width:200px;text-align:right;padding-right:20px;padding-top:5px">{{item.name}}:</label>
+        <select v-if="item.type == 'selector'" name="select" style="width:200px" :placeholder="item.name" @mousemove="clichSelect()"  @change="onChange($event)">
             <option v-for="s in selectt" :key="s" ref="option" :value="s.name">{{ s.name }}</option> 
-          </select> 
-        </div>
-        <div v-else class="col-md-8" style="padding-left: 0px;margin-left: 0px; width:350px;">
-          <input class="input-modal" :ref="item.name" style="margin-left:5%" :type="item.type" :placeholder="item.name" required="required" :data-validation-required-message="'Please enter'+item.name"> 
-        </div>
-       <br/><br/>
-      </div>  
+          </select>  
+          <input v-else class="input-modal" :ref="item.name" style="width:200px" :type="item.type" :placeholder="item.name" required="required" :data-validation-required-message="'Please enter'+item.name"> 
+         </div>  
     </form>
   </div>
-  <p v-if="errors.length">
-    <br/>
-     <b style="color:#EB5E30">Debe llenar todos los campos</b>
-    <ul> 
-      <!-- <li v-for="error in errors">{{ error }}</li> -->
-    </ul>
+  <p v-if="errors.length"> 
+     <b style="color:#EB5E30;font-size:10px">Debe llenar todos los campos</b> 
   </p>
-  <br/><br/> 
-      <div style="display:flex; justify-content:center;text-align:center;">
+ 
+      <div style="display:flex; justify-content:center;text-align:center;margin-top:10px">
       <button type="button" class="button button--accept" @click="sendForm()">Aceptar</button>
       <button type="button" class="button button--cancel" @click="cleanForm()">Cancelar</button>
     </div>
@@ -53,7 +44,7 @@
 </template>
 
 <script> 
-
+import { useFincaStore } from '@/stores/finca'
 export default {
   name: "ModalAddComponent", 
   props: {
@@ -61,6 +52,7 @@ export default {
     title: String,
     list: Array,
     table: String,
+    tableShort: String,
     selectt: Array
     // eslint-disable-next-line vue/require-prop-type-constructor
   },
@@ -102,11 +94,13 @@ export default {
       data[element.realName] = this.$refs[element.name][0].value;
 
       }) 
+
+      const fincaActual = useFincaStore()
  
       if(this.table == 'animals')
-      data["idFincaId"] = this.$myGlobalVariable;
+      data["idFincaId"] = fincaActual.finca;
       else
-      data["idFinca"] = this.$myGlobalVariable;
+      data["idFinca"] = fincaActual.finca;
  
       const url = await fetch(`http://localhost:9707/apis/${this.table}/`, {
         method: "POST",
@@ -179,7 +173,7 @@ select.addEventListener('mouseout', () => {
 .button {
   margin: 0 15px;
   padding: 15px 0;
-  min-width: 120px;
+  min-width: 120px; 
   border-radius: 23px;
   border: none;
   transition: all 0.3s linear;
@@ -228,9 +222,9 @@ select.addEventListener('mouseout', () => {
   left: 0;
   margin: auto;
   text-align: center;
-  width: 40%;
-  height: fit-content;
-  max-width: 100%;
+  width: auto;
+  max-width: 400px;
+  height: fit-content; 
   max-height: 100%;
   padding: 2rem;
   border-radius: 1rem;
@@ -271,8 +265,8 @@ select.addEventListener('mouseout', () => {
   text-align: center;
   justify-content: center;
   background-color: rgb(243, 242, 242);
-  padding-top: 8%;
-  padding-bottom: 6%;
+  padding-top: 4%;
+  padding-bottom: 2%;
   border-radius: 1rem;
   margin-left: 5%;
   margin-right: 5%;
@@ -280,6 +274,7 @@ select.addEventListener('mouseout', () => {
   overflow-y: auto;
   height: auto; 
   max-height: 400px;
+  max-width: 400px;
   overflow-x: hidden;
 }
 

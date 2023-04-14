@@ -1,26 +1,32 @@
 <!-- eslint-disable vue/no-multiple-template-root -->
  <template>
   <div id="app">
+ 
+    <router-view />
+
     <VueSidebarMenuAkahon style="padding-bottom: 1px;"
+      :isUsedVueRouter="true"
       menuTitle="Finca"
       menuLogo="./finca.png"
       bgColor="#42b983"
       secondaryColor="#252850"
       menuItemsHoverColor="#252850"
       profileImg="./test.png"
-      profileName="username"
-      profileRole="admin"
+      :profileName="getUserName()"
+      :profileRole="getRole()"
       :menuItems="items"
       :isSearch="false"
       :button-exit-clicked="'ee'"
     />
- 
-    <router-view />
+
+    
   </div>
 </template>
 
 <script>
 import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
+import { ref, getCurrentInstance } from "vue";
+import { useFincaStore } from '@/stores/finca'
 
 export default {
   name: "App",
@@ -29,7 +35,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
   },
   data() {
-    return {
+    return { 
       items: [
         // {
         //   link: "/",
@@ -40,7 +46,7 @@ export default {
         { link: "/users", name: "Usuario", tooltip: "User", icon: "bx-user" },
         {
           link: "/animales",
-          name: "Animales",
+          name: "Alimentos",
           tooltip: "Tables",
           icon: "bx-table",
         },
@@ -51,47 +57,17 @@ export default {
           icon: "bx-table",
         },
         {
-          link: "/equipos",
-          name: "Equipos",
-          tooltip: "Tables",
-          icon: "bx-table",
-        },
-        // {
-        //   link: "/provincias",
-        //   name: "Provincias",
-        //   tooltip: "Tables",
-        //   icon: "bx-table",
-        // },
-        // {
-        //   link: "/altas",
-        //   name: "Altas",
-        //   tooltip: "Tables",
-        //   icon: "bx-table",
-        // },
-        // {
-        //   link: "/bajas",
-        //   name: "Bajas",
-        //   tooltip: "Tables",
-        //   icon: "bx-table",
-        // },
-        // {
-        //   link: "/data",
-        //   name: "Datos Economicos",
-        //   tooltip: "Tables",
-        //   icon: "bx-table",
-        // },
+          link: "/total",
+          name: "Total producción",
+          tooltip: "Dashboard",
+          icon: "bx-grid-alt",
+        }, 
         // {
         //   link: "/results",
         //   name: "Resultados Economicos",
         //   tooltip: "Tables",
         //   icon: "bx-table",
-        // },
-        // {
-        //   link: "/hechos",
-        //   name: "Hechos Delictivos",
-        //   tooltip: "Tables",
-        //   icon: "bx-table",
-        // },
+        // }, 
         // { link: "#", name: "Filtred", tooltip: "Filtred", icon: "bx-heart" },
         // {
         //   link: "#",
@@ -103,6 +79,19 @@ export default {
       ],
     };
   },  
+  methods:{
+    getLink(){
+      return `<router-link to='/animales'></router-link>`
+    },
+    getUserName(){  
+     const fincaActual = useFincaStore();
+     return fincaActual.user;
+    },
+    getRole(){ 
+     const fincaActual = useFincaStore();
+     return fincaActual.role;
+    }
+  }
 };
 </script>
 

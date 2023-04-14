@@ -3,12 +3,12 @@
 <div id="container" :style="getStyle()">
   <div id="left">
     <img src="/test.png" width="300" height="200" style="padding-bottom: 5px;margin-bottom: 0px;margin-top: 30px;"/>
-    <h1 id="welcome" style="font-weight:400;padding-top: 20px;margin-top: 0px">Bienvenido</h1> 
+    <h1 id="welcome" style="font-weight:400;padding-top:0px;margin-top: 0px">Bienvenido</h1> 
     <p>
-      Ingrese con su usuario y contrasena. 
+      Ingrese con su usuario y contraseña. 
       </p>
        <p>
-      Comience a gestionar todo lo referente a su finca.
+      Comience a gestionar todo lo referente a sus fincas.
       </p>
        <p>
       Puede insertar, atualizar y eliminar datos 
@@ -27,7 +27,7 @@
     <label for="email">Nombre de usuario</label> 
 
     <input @click="error = ''" type="password" v-model="password" id="password" class="client-info" required="required" :data-validation-required-message="'Please enter password'">
-    <label for="password">Contrasena</label>
+    <label for="password">Contraseña</label>
   
     <input type="submit" id="submit" href="javascript:void(0)" class="client-info button" value="Acceder">
    </form>
@@ -38,9 +38,9 @@
 
 
   <div id="right" v-if="register&&sent">
-    <h1 id="login" style="font-weight: 400;">Registro</h1><br>
+    <h1 id="login" style="font-weight: 400; margin-top:-5%">Registro</h1><br>
 
-   <form method="POST" action="javascript:void(0)" validate="novalidate" @submit="addUser()"> 
+   <form method="POST" action="javascript:void(0)" validate="novalidate" @submit="addUser()" style="margin-top:-5%"> 
     <input v-model="username" type="text" id="email" class="client-info" required="required" :data-validation-required-message="'Please enter username'">
     <label for="email">Nombre de usuario</label>
 
@@ -54,7 +54,7 @@
     <label for="rol">Rol</label>
 
     <input v-model="password" type="password" id="password" class="client-info" required="required" :data-validation-required-message="'Please enter password'">
-    <label for="password">Contrasena</label>
+    <label for="password">Contraseña</label>
   
     <input required type="submit" id="submit" href="javascript:void(0)" class="client-info button" value="Registrar">
    </form>
@@ -67,7 +67,10 @@
 <script setup> 
 
 import { ref, getCurrentInstance } from "vue";
- 
+import { useFincaStore } from '@/stores/finca'
+
+const fincaActual = useFincaStore()
+
 let username = ref('');
 let password = ref(''); 
 let finca = ref('');  
@@ -80,11 +83,10 @@ let register = ref(false);
 let sent = ref(true);
 
 let error = ref(null);
-      
-const app = getCurrentInstance()
+       
 
 let getStyle=()=>{
-  return sent.value ? "margin-left: 100px;" : "margin-left: 350px;";
+  return sent.value ? "margin-top:10px;padding-bottom:20px;margin-left: 100px;" : "margin-top:10px;padding-bottom:20px;margin-left: 350px;";
 }
 
 let list = ref([
@@ -121,31 +123,40 @@ let list = ref([
         },
       }).then((res) => res.json());
  
-     app.appContext.config.globalProperties.$myGlobalVariable = finca.value; 
-
+     fincaActual.setFinca(finca.value);
+     fincaActual.setUser(username.value);
+      fincaActual.setRole(rol1.value);
+       fincaActual.setPass(password.value);
      sent.value=false;
  
     };
  
 
-    let loginUser = async () => { 
-    
+    let loginUser = async () => {  
+      
+    if(fincaActual.user==username.value&&fincaActual.pass==password.value){
+      error.value = "Ya se encuentra su usuario activo"
+    }
+    else{
       error.value = null;  
       const url = `http://localhost:9707/apis/usuario?name=${username.value}&password=${password.value}`;
-
+   
       const r = await fetch(url, { 
        headers: {"Content-type": "application/json;charset=UTF-8"}, 
       });
       const data = await r.json();
-        
+     
       if(data[0] == null)
       error.value = "Los datos introducidos son incorrectos"
       else {
-
-      app.appContext.config.globalProperties.$myGlobalVariable = data[0].idFinca; 
-
+       
+      fincaActual.setFinca(data[0].idFinca);
+      fincaActual.setUser(data[0].name);
+      fincaActual.setRole(data[0].rol); 
+      fincaActual.setPass(data[0].password); 
       sent.value=false; 
       }
+    }
     };
 </script>
  
@@ -163,6 +174,8 @@ let list = ref([
 
 html {
   height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
 } 
 
 #container {
@@ -182,12 +195,13 @@ html {
   grid-template-columns: repeat(2, 50%);
   box-shadow: var(--box-shadow);
   transition-duration: 1s;
+  overflow: hidden;
 }
 
 #left, #right {
-  margin: auto;
+  margin: auto; 
   width: 100%;
-  height: 96%;
+  height: 92%;
   border-radius: 30px;
   box-shadow:
        inset 0 -3em 3em rgba(0,0,0,0.1),

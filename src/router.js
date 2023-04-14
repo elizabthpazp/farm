@@ -1,79 +1,61 @@
 
 import { createRouter, createWebHistory } from "vue-router"; 
 import Cultivos from './pages/Cultivos.vue'
-import Animales from './pages/Animales.vue'
-import Equipos from './pages/Equipos.vue'
-import ModalAdd from './components/ModalAdd.vue'
-import User from './pages/UserP.vue'
-import Provincias from './pages/Provincias.vue'
-import Altas from './pages/Altas.vue'
-import Bajas from './pages/Bajas.vue'
-import Datos from './pages/Datos.vue'
-import Resultados from './pages/Resultados.vue'
-import Hechos from './pages/Hechos.vue' 
+import Animales from './pages/Animales.vue' 
+import User from './pages/UserP.vue' 
+import Total from './pages/Total.vue' 
+import { useFincaStore } from '@/stores/finca' 
 
 const routes = [ 
   {
     path: "/animales",
     name: "Animales",
-    component: Animales
+    component: Animales,
+    meta: {
+      reload: false,
+    }, 
   },
   {
     path: "/cultivos",
     name: "Cultivos",
-    component: Cultivos
-  }, 
-  {
-    path: "/equipos",
-    name: "Equipos",
-    component: Equipos
-  }, 
+    component: Cultivos,
+    meta: {
+      reload: false,
+    }, 
+  },  
   {
     path: "/users",
     name: "User",
-    component: User
+    component: User,
+    meta: {
+      reload: false,
+    }, 
   },
-  {
-    path: "/equipos",
-    name: "Equipos",
-    component: Equipos
-  },   
-  {
-    path: "/results",
-    name: "Resultados",
-    component: Resultados
-  }, 
-  {
-    path: "/data",
-    name: "Datos",
-    component: Datos
-  }, 
-  {
-    path: "/bajas",
-    name: "Bajas",
-    component: Bajas
-  }, 
-  {
-    path: "/altas",
-    name: "Altas",
-    component: Altas
-  }, 
-  {
-    path: "/provincias",
-    name: "Provincias",
-    component: Provincias
-  }, 
-  {
-    path: "/hechos",
-    name: "Hechos",
-    component: Hechos
-  }, 
+    {
+      path: "/total",
+      name: "Total",
+      component: Total,
+      meta: {
+        reload: false,
+      },  
+  },    
  
 ];
+
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// router.beforeEach((to, from, next) => {
+//   const fincaStore = useFincaStore(); 
+// });
+
+router.beforeEach((to) => {
+  const fincaStore = useFincaStore(); 
+  to.meta.fincaStore = fincaStore.finca;
+  to.meta.reload= false; 
+})
 
 export default router;
