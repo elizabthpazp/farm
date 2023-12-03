@@ -10,11 +10,7 @@ import { useFincaStore } from '@/stores/finca'
 
 const pinia = createPinia()
 var idFincaGlobal = '1' 
-
-///token github
-//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
-
-// createApp(App).mount('#app')
+ 
 
 const app = createApp(App); 
 app.use(pinia);
