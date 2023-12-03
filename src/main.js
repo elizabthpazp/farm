@@ -26,12 +26,7 @@ app.config.globalProperties.$myGlobalVariable = idFincaGlobal
 
 
 app.mount("#app"); 
-app.provide('myGlobalVariable', app.config.globalProperties.$myGlobalVariable)
-//new
-//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
-
-//al llamarla es 
-//this.$myGlobalVariable = "testt";
+app.provide('myGlobalVariable', app.config.globalProperties.$myGlobalVariable) 
  
 
 
