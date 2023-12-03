@@ -8,7 +8,7 @@
       Ingrese con su usuario y contraseña. 
       </p>
        <p>
-      Comience a gestionar todo lo referente a sus fincas.
+      Comience a gestionar todo lo referente a sus granjas.
       </p>
        <p>
       Puede insertar, atualizar y eliminar datos 
